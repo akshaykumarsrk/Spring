@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Builder
 public class Player {
 
     @Id
@@ -33,6 +34,5 @@ public class Player {
     Stats stats;
 
     @ManyToOne
-    @JoinColumn
     Team team;
 }
