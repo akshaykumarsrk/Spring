@@ -2,10 +2,13 @@ package com.example.Cricbuzz.Application.controller;
 
 import com.example.Cricbuzz.Application.dto.request.PlayerRequest;
 import com.example.Cricbuzz.Application.dto.response.PlayerResponse;
+import com.example.Cricbuzz.Application.exception.PlayerNotFoundException;
 import com.example.Cricbuzz.Application.model.enums.Gender;
 import com.example.Cricbuzz.Application.model.enums.Speciality;
 import com.example.Cricbuzz.Application.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,15 +21,22 @@ public class PlayerController {
     PlayerService playerService;
 
     @PostMapping("/addPlayer")
-    public PlayerResponse addPlayer(@RequestBody PlayerRequest playerRequest)
+    public ResponseEntity<PlayerResponse> addPlayer(@RequestBody PlayerRequest playerRequest)
     {
-        return playerService.addPlayer(playerRequest);
+        return new ResponseEntity<>(playerService.addPlayer(playerRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/id/{id}")
-    public PlayerResponse getPlayerById(@PathVariable("id") int id)
+    public ResponseEntity getPlayerById(@PathVariable("id") int id)
     {
-        return playerService.getPlayerById(id);
+        try
+        {
+            return new ResponseEntity<>(playerService.getPlayerById(id), HttpStatus.OK);
+        }
+        catch (PlayerNotFoundException e)
+        {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // gender and age -> Male, 35 >= 35

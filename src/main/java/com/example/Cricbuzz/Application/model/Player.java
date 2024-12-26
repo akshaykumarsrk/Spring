@@ -24,6 +24,8 @@ public class Player {
 
     int age;
 
+    String email;
+
     @Enumerated(EnumType.STRING)
     Speciality speciality;
     // by default Database treat ENUMS as integer
